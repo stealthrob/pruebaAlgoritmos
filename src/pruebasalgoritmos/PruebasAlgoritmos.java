@@ -19,6 +19,7 @@ public class PruebasAlgoritmos {
         // TODO code application logic here
         System.out.println("Este es un super código.");
         System.out.println("Este tambien");
+        System.out.println("holo holo");
     }
     
 }
