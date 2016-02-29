@@ -13,28 +13,34 @@ import java.util.Scanner;
  */
 public class pruebaAlgoritm {
 
-    private int[] arrayO, arrayD, arrayR;
+    private long[] arrayO, arrayD, arrayR;
     private int nElems;
+    public int[][] val;
+    long startTime, endTime, duration;
 
     public pruebaAlgoritm() {
         //Creación de array ordenado
 
-        arrayO = new int[1000];
-        arrayD = new int[1000];
-        arrayR = new int[1000];
+        arrayO = new long[1000];
+        arrayD = new long[1000];
+        arrayR = new long[1000];
+        val = new int[3][4];
+        //0 es para los valores arrojados por el array ordenado
+        //1 es para los valores arrojados por el array desordenado
+        //2 es para los valores arrojados por el array al reves
 
         for (int i = 0; i < 1000; i++) {
             arrayO[i] = i + 1;
         }
         //Creación de array revés
-        for (int i = 999; i > -1; i--) {
-            arrayR[1000 - (i + 1)] = i + 1;
+        for (int i = 0; i < 1000; i++) {
+            arrayR[i] = 1000 - i;
         }
         //Creación de array desordenado
 
         for (int i = 0; i < 1000; i++) {
 
-            arrayD[i] = (int) (Math.random() * 1000);
+            arrayD[i] = (int) (Math.random() * 100000);
 
         }
         this.nElems = 1000;
@@ -70,145 +76,179 @@ public class pruebaAlgoritm {
             System.out.println("");
         }
     }
-    
-    public int[]  bubbleSort(int array[]){
-        int out,in,itera=0,compara=0;
+
+    public int[] bubbleSort(long array[]) {
+        startTime = System.nanoTime();
+        int out, in;
+        int itera = 0, compara = 1, swaps = 0;
         int[] val;
-        for (out=nElems-1; out > 1; out--) {
+        for (out = nElems - 1; out > 1; out--) {
             itera++;
             for (in = 0; in < out; in++) {
                 compara++;
-                if(array[in]>array[in+1]){
-                    swap(in,in+1,array);
+                if (array[in] > array[in + 1]) {
+                    swap(in, in + 1, array);
+                    swaps++;
                 }
             }
         }
-        System.out.println("No. de iteraciones: "+itera);
-        System.out.println("No. de comparaciones: "+compara);
-        val = new int[2];
+        System.out.println("No. de iteraciones: " + itera);
+        System.out.println("No. de comparaciones: " + compara);
+        System.out.println("No. de swaps: " + swaps);
+        val = new int[4];
         val[0] = itera;
         val[1] = compara;
+        val[2] = swaps;
+
+        endTime = System.nanoTime();
+        duration = (endTime - startTime);
+        val[3] = (int) duration;
+
+        System.out.println("Duración de la prueba duration: " + val[3]);
         return val;
     }
-    
-    public void selectionSort(int array[]){
-        int out, in, min,itera=0,compara=0;
-        
+
+    public int[] selectionSort(long array[]) {
+        startTime = System.nanoTime();
+        int out, in, min, itera = 0, compara = 0, swaps = 0;
+        int[] val;
+
         for (out = 0; out < nElems; out++) {
             min = out;
             itera++;
-            for (in = out+1; in < nElems; in++) {
+            for (in = out + 1; in < nElems; in++) {
                 compara++;
-                if(array[in]<array[min])
-                    min=in;
-                swap(out,min,array);
+                if (array[in] < array[min]) {
+                    min = in;
+                    swaps++;
+                }
+
+                swap(out, min, array);
             }
-            
+
         }
-        
-        System.out.println("No. de iteraciones: "+itera);
-        System.out.println("No. de comparaciones: "+compara);
+        System.out.println("No. de iteraciones: " + itera);
+        System.out.println("No. de comparaciones: " + compara);
+        System.out.println("No. de swaps: " + swaps);
+        val = new int[4];
+        val[0] = itera;
+        val[1] = compara;
+        val[2] = swaps;
+
+        endTime = System.nanoTime();
+        duration = (endTime - startTime);
+        val[3] = (int) duration;
+        System.out.println("Duración de la prueba: " + val[3]);
+        return val;
     }
-    
-    public void insertionSort(int array[]){
-        int in,out;
+
+    public int[] insertionSort(long array[]) {
+        long startTime = System.nanoTime();
+        int in, out, itera = 1, compara = 0, swaps = 0;
+        int[] val;
+
         for (out = 1; out < nElems; out++) {
             long temp = array[out];
             in = out;
-            while(in>0 && array[in-1]>=temp){
-                array[in] = array[in-1];
+
+            compara++;
+            while (in > 0 && array[in - 1] >= temp) {
+
+                swaps++;
+                array[in] = array[in - 1];
                 --in;
             }
-            array[in] = (int)temp;
+            array[in] = (int) temp;
         }
-    }
-    
-    public void pruebaBubble(){
-        //Ordenado
-        System.out.println("Algoritmo burbuja, array ordenado:");
-        long startTime = System.nanoTime();
-        
-        bubbleSort(arrayO);
+        System.out.println("No. de iteraciones: " + itera);
+        System.out.println("No. de comparaciones: " + compara);
+        System.out.println("No. de swaps: " + swaps);
+        val = new int[4];
+        val[0] = itera;
+        val[1] = compara;
+        val[2] = swaps;
+
         long endTime = System.nanoTime();
-        long durationO = (endTime - startTime);
-        System.out.println("Duración de la prueba: "+durationO);
-        //Desordenado
-        System.out.println("Algoritmo burbuja, array desordenado:");
-        startTime = System.nanoTime();
-        
-        bubbleSort(arrayD);
-        endTime = System.nanoTime();
-        long durationD = (endTime - startTime);
-        System.out.println("Duración de la prueba: "+durationD);
-        //Reves
-        System.out.println("Algoritmo burbuja, array al reves:");
-        startTime = System.nanoTime();
-        bubbleSort(arrayR);
-        endTime = System.nanoTime();
-        long durationR = (endTime - startTime);
-        System.out.println("Duración de la prueba: "+durationR);
-        
-        
+        long duration = (endTime - startTime);
+        val[3] = (int) duration;
+        System.out.println("Duración de la prueba: " + val[3]);
+        return val;
     }
-    
-    
-    public void pruebaSelection(){
+
+    public void pruebaBubble() {
+
         //Ordenado
-        
+        //----------------------------------------------------------------------
+        System.out.println("Algoritmo burbuja, array ORDENADO:");
+
+        this.val[0] = bubbleSort(arrayO);
+
+        System.out.println(" ");
+
+        //Desordenado
+        //----------------------------------------------------------------------
+        System.out.println("Algoritmo burbuja, array DESORDENADO:");
+
+        this.val[1] = bubbleSort(arrayD);
+        System.out.println(" ");
+
+        //Reves
+        //----------------------------------------------------------------------
+        System.out.println("Algoritmo burbuja, array AL REVES:");
+        this.val[2] = bubbleSort(arrayR);
+        System.out.println(" ");
+
+    }
+
+    public void pruebaSelection() {
+
+        //Ordenado
+        //----------------------------------------------------------------------
         System.out.println("Algoritmo de selección, array ORDENADO");
-        long startTime = System.nanoTime();
-        selectionSort(arrayO);
-        long endTime = System.nanoTime();
-        long durationO = (endTime - startTime);
-        System.out.println("Duración de la prueba: "+durationO);
+
+        this.val[0] = selectionSort(arrayO);
+
         //Desordenado
+        //----------------------------------------------------------------------
         System.out.println("Algoritmo de selección, array DESORDENADO");
-        startTime = System.nanoTime();
-        selectionSort(arrayD);
-        endTime = System.nanoTime();
-        long durationD = (endTime - startTime);
-        System.out.println("Duración de la prueba: "+durationD);
+        this.val[1] = selectionSort(arrayD);
+        System.out.println(" ");
         //Reves
+        //----------------------------------------------------------------------
         System.out.println("Algoritmo de selección, array AL REVÉS");
-        startTime = System.nanoTime();
-        selectionSort(arrayR);
-        endTime = System.nanoTime();
-        long durationR = (endTime - startTime);
-        System.out.println("Duración de la prueba: "+durationR);
+        this.val[2] = selectionSort(arrayR);
+        System.out.println(" ");
     }
-    
-    public void pruebaInsertion(){
-         //Ordenado
-        long startTime = System.nanoTime();
-        selectionSort(arrayO);
-        long endTime = System.nanoTime();
-        long durationO = (endTime - startTime);
-        System.out.println(startTime);
-        System.out.println(endTime);
-        System.out.println("Duración de la prueba: "+durationO);
+
+    public void pruebaInsertion() {
+
+        //Ordenado
+        //----------------------------------------------------------------------
+        System.out.println("Algoritmo de inserción, array ORDENADO");
+
+        this.val[0] = insertionSort(arrayO);
+        System.out.println(" ");
+
         //Desordenado
-        startTime = System.nanoTime();
-        insertionSort(arrayD);
-        endTime = System.nanoTime();
-        long durationD = (endTime - startTime);
-        System.out.println(startTime);
-        System.out.println(endTime);
-        System.out.println("Duración de la prueba: "+durationD);
+        //----------------------------------------------------------------------
+        System.out.println("Algoritmo de inserción, array DESORDENADO");
+
+        this.val[1] = insertionSort(arrayD);
+        System.out.println(" ");
         //Reves
-        startTime = System.nanoTime();
-        insertionSort(arrayR);
-        endTime = System.nanoTime();
-        long durationR = (endTime - startTime);
-        System.out.println(startTime);
-        System.out.println(endTime);
-        System.out.println("Duración de la prueba: "+durationR);
+        //----------------------------------------------------------------------
+        System.out.println("Algoritmo de inserción, array AL REVES.");
+
+        this.val[2] = insertionSort(arrayR);
+        System.out.println(" ");
+
     }
-    
-     private void swap(int one, int two,int array[]){
-                int temp = arrayO[one];
-                array[one] = array[two];
-                array[two] = temp;
-                
-            }
+
+    private void swap(int one, int two, long array[]) {
+        long temp = array[one];
+        array[one] = array[two];
+        array[two] = temp;
+
+    }
 
 }
