@@ -17,6 +17,7 @@ public class AnalisisAlgoritmosBusqueda {
     public static void main(String[] args) {
         // TODO code application logic here
         System.out.println("Programa desde MAC");
+        System.out.println("Programa desde MAC 1");
     }
     
 }
